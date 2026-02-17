@@ -28,11 +28,11 @@ const schemeFromBundleId = `manus${timestamp}`;
 
 const env = {
   // App branding - update these values directly (do not use env vars)
-  appName: "FlexiPlatform - Extensible Plugin Platform",
-  appSlug: "FlexiPlatform",
+  appName: "FlexiPlatform",
+  appSlug: "flexiplatform",
   // S3 URL of the app logo - set this to the URL returned by generate_image when creating custom logo
   // Leave empty to use the default icon from assets/images/icon.png
-  logoUrl: "",
+  logoUrl: "https://private-us-east-1.manuscdn.com/sessionFile/7K0zJ3dK56xErL47ldaTR9/sandbox/w1pH5zdSWAJjgBFQtktCPW-img-1_1771305007000_na1fn_aWNvbg.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80",
   scheme: schemeFromBundleId,
   iosBundleId: bundleId,
   androidPackage: bundleId,
