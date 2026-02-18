@@ -1,0 +1,62 @@
+{
+  "name": "sample-analytics-plugin",
+  "displayName": "Sample Analytics Plugin",
+  "version": "1.0.0",
+  "description": "A sample analytics plugin that tracks user actions and generates reports. This plugin serves as a template for developing custom plugins for FlexiPlatform.",
+  "author": "Manus AI",
+  "license": "MIT",
+  "homepage": "https://github.com/seibchristian/FlexiPlatform/tree/main/plugins/sample-analytics-plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seibchristian/FlexiPlatform.git"
+  },
+  "keywords": [
+    "flexiplatform",
+    "plugin",
+    "analytics",
+    "sample",
+    "template"
+  ],
+  "permissions": [
+    "read:events",
+    "write:storage",
+    "read:users",
+    "read:database"
+  ],
+  "hooks": [
+    "onPluginInitialize",
+    "onUserAction",
+    "onDataChange"
+  ],
+  "settings": {
+    "enableTracking": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable or disable user action tracking"
+    },
+    "trackingInterval": {
+      "type": "number",
+      "default": 60000,
+      "min": 1000,
+      "max": 3600000,
+      "description": "Interval in milliseconds for aggregating tracking data"
+    },
+    "retentionDays": {
+      "type": "number",
+      "default": 30,
+      "min": 1,
+      "max": 365,
+      "description": "Number of days to retain analytics data"
+    },
+    "enableDetailedLogging": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable detailed logging for debugging"
+    },
+    "excludedEvents": {
+      "type": "array",
+      "default": ["heartbeat", "ping"],
+      "description": "List of event types to exclude from tracking"
+    }
+  }
+}
