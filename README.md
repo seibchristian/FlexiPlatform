@@ -1,26 +1,618 @@
-# FlexiPlatform - Extensible Plugin Platform
+# FlexiPlatform
 
-**FlexiPlatform** ist eine moderne, erweiterbare Cross-Platform Software-Plattform mit einem flexiblen Plugin-System. Die Plattform ermöglicht es Entwicklern und Administratoren, die Funktionalität durch Plugins zu erweitern, ohne den Kern-Code zu modifizieren. FlexiPlatform bietet umfassende Verwaltungsfunktionen für Benutzer, Drucker, Server und Datenbank-Konfigurationen.
+> Eine moderne, erweiterbare Cross-Platform Software-Plattform mit flexiblem Plugin-System
 
-## Features
+**FlexiPlatform** ist eine produktionsreife Plattform, die es Entwicklern und Administratoren ermöglicht, die Funktionalität durch ein modulares Plugin-System zu erweitern. Die Plattform läuft nativ auf iOS, Android und Web und bietet umfassende Verwaltungsfunktionen für Benutzer, Drucker, Server und Datenbanken.
 
-### Kernfunktionalität
+## 🚀 Highlights
 
-**Plugin-System**: Das Herzstück von FlexiPlatform ist ein modulares Plugin-System, das es ermöglicht, neue Funktionen einfach hinzuzufügen oder zu entfernen. Plugins können aktiviert, deaktiviert, konfiguriert und verwaltet werden, ohne dass die Plattform neu gestartet werden muss.
+| Feature | Beschreibung |
+|---------|-------------|
+| **Plugin-System** | Modulare Architektur für einfache Erweiterbarkeit ohne Kern-Modifikationen |
+| **Benutzerverwaltung** | Authentifizierung, Rollen und granulare Berechtigungen |
+| **Cross-Platform** | iOS, Android und Web aus einer Codebasis |
+| **Drucker-Verwaltung** | Netzwerk-Drucker konfigurieren und überwachen |
+| **Server-Verwaltung** | Status-Überwachung und Konfiguration in Echtzeit |
+| **Datenbank-Verwaltung** | Unterstützung für MySQL, PostgreSQL und SQLite |
 
-**Benutzerverwaltung**: Vollständiges Benutzerverwaltungssystem mit Authentifizierung, Rollen und Berechtigungen. Unterstützt verschiedene Benutzerrollen (Admin, Editor, Viewer) mit granularen Berechtigungen.
+---
 
-**Drucker-Einstellungen**: Konfigurieren und verwalten Sie Drucker im Netzwerk. Die Plattform unterstützt Drucker-Status-Überwachung, Test-Drucke und Drucker-Konfiguration.
+## 📋 Inhaltsverzeichnis
 
-**Server-Verwaltung**: Überwachen Sie den Server-Status, konfigurieren Sie Server-Parameter und verwalten Sie Server-Logs in Echtzeit.
+- [Schnellstart](#-schnellstart)
+- [Technologie-Stack](#-technologie-stack)
+- [Installation](#-installation)
+- [Verwendung](#-verwendung)
+- [Plugin-System](#-plugin-system)
+- [API-Dokumentation](#-api-dokumentation)
+- [Projektstruktur](#-projektstruktur)
+- [Konfiguration](#-konfiguration)
+- [Entwicklung](#-entwicklung)
+- [Troubleshooting](#-troubleshooting)
+- [Beitragen](#-beitragen)
+- [Lizenz](#-lizenz)
 
-**Datenbank-Verwaltung**: Unterstützt mehrere Datenbanktypen (MySQL, PostgreSQL, SQLite) mit Verbindungsverwaltung, Status-Überwachung und Backup-Funktionen.
+---
 
-### Plattform-Unterstützung
+## 🎯 Schnellstart
 
-FlexiPlatform ist vollständig Cross-Platform und läuft auf:
+### Voraussetzungen
 
-- **iOS**: Native Unterstützung über Expo
-- **Android**: Native Unterstützung über Expo
-- **Web**: Responsive Web-Anwendung
-- **Desktop**: Kann über Web-Technologien oder Electron erweitert werdenlectron erweitert werden\n\n## Technologie-Stack\n\n| Komponente | Technologie | Version |\n|-----------|------------|----------|\n| Frontend | React Native + Expo | 54 |\n| Styling | NativeWind (Tailwind CSS) | 4 |\n| Backend | Express.js + Node.js | 22.13 |\n| API | tRPC | 11.7.2 |\n| Datenbank | Drizzle ORM + MySQL | - |\n| Authentifizierung | Manus OAuth | - |\n| Zustandsverwaltung | React Context | - |\n\n## Installation\n\n### Voraussetzungen\n\nStellen Sie sicher, dass folgende Software installiert ist:\n- **Node.js** (Version 22.13 oder höher)\n- **pnpm** (Package Manager)\n- **Expo CLI** (für Mobile-Entwicklung)\n- **Git** (für Versionskontrolle)\n\n### Schritt-für-Schritt Installation\n\n1. **Repository klonen**\n   ```bash\n   git clone https://github.com/seibchristian/FlexiPlatform.git\n   cd FlexiPlatform\n   ```\n\n2. **Abhängigkeiten installieren**\n   ```bash\n   pnpm install\n   ```\n\n3. **Umgebungsvariablen konfigurieren**\n   ```bash\n   cp .env.example .env.local\n   # Bearbeiten Sie .env.local mit Ihren Konfigurationen\n   ```\n\n4. **Datenbank-Migrationen durchführen**\n   ```bash\n   pnpm db:push\n   ```\n\n5. **Entwicklungsserver starten**\n   ```bash\n   pnpm dev\n   ```\n\n   Dies startet sowohl den Backend-Server (Port 3000) als auch den Metro-Bundler (Port 8081).\n\n## Verwendung\n\n### Mobile App starten\n\n**iOS Simulator:**\n```bash\npnpm ios\n```\n\n**Android Emulator:**\n```bash\npnpm android\n```\n\n**Web-Version:**\n```bash\npnpm dev:metro\n```\n\nDie Web-Version ist dann unter `http://localhost:8081` erreichbar.\n\n### QR-Code für Expo Go\n\nUm die App auf einem echten Gerät zu testen, können Sie den QR-Code generieren:\n```bash\npnpm qr\n```\n\nScannen Sie den QR-Code mit Expo Go auf Ihrem Smartphone.\n\n## Plugin-System\n\n### Architektur\n\nDas Plugin-System von FlexiPlatform folgt einer modularen Architektur, die es ermöglicht, Funktionen zur Laufzeit zu laden und zu entladen. Die Plugin-Architektur besteht aus folgenden Komponenten:\n\n**Plugin Registry**: Verwaltet alle installierten Plugins und deren Metadaten.\n\n**Plugin Loader**: Lädt Plugins dynamisch zur Laufzeit.\n\n**Plugin Lifecycle**: Verwaltet Aktivierung, Deaktivierung und Konfiguration von Plugins.\n\n**Plugin API**: Bietet eine standardisierte Schnittstelle für Plugins zur Interaktion mit der Plattform.\n\n### Plugin erstellen\n\nEin einfaches Plugin-Beispiel:\n\n```typescript\n// plugins/my-plugin/index.ts\nexport interface MyPluginConfig {\n  enabled: boolean;\n  apiKey?: string;\n}\n\nexport const myPlugin = {\n  name: \"My Custom Plugin\",\n  version: \"1.0.0\",\n  description: \"Ein benutzerdefiniertes Plugin für FlexiPlatform\",\n  author: \"Your Name\",\n  \n  async initialize(config: MyPluginConfig) {\n    console.log(\"Plugin initialisiert mit Config:\", config);\n  },\n  \n  async execute(action: string, params: any) {\n    switch (action) {\n      case \"doSomething\":\n        return { success: true, message: \"Action ausgeführt\" };\n      default:\n        throw new Error(`Unbekannte Action: ${action}`);\n    }\n  },\n  \n  async shutdown() {\n    console.log(\"Plugin wird heruntergefahren\");\n  },\n};\n```\n\n### Plugin installieren\n\n1. Navigieren Sie zur \"Plugins\"-Seite in der App\n2. Tippen Sie auf \"+ Hinzufügen\"\n3. Wählen Sie das Plugin aus der verfügbaren Liste\n4. Das Plugin wird installiert und kann sofort aktiviert werden\n\n### Plugin konfigurieren\n\n1. Gehen Sie zur Plugin-Detail-Seite\n2. Bearbeiten Sie die Konfigurationsparameter\n3. Speichern Sie die Änderungen\n4. Das Plugin wird mit den neuen Einstellungen neu geladen\n\n## API-Dokumentation\n\n### Authentifizierung\n\nAlle geschützten Endpoints erfordern Authentifizierung über Manus OAuth.\n\n**Login:**\n```bash\nPOST /api/auth/login\nContent-Type: application/json\n\n{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}\n```\n\n**Response:**\n```json\n{\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"John Doe\",\n    \"email\": \"user@example.com\",\n    \"role\": \"admin\"\n  },\n  \"token\": \"eyJhbGciOiJIUzI1NiIs...\"\n}\n```\n\n### Plugin-Endpoints\n\n**Plugins auflisten:**\n```bash\nGET /api/trpc/plugins.list\nAuthorization: Bearer {token}\n```\n\n**Plugin erstellen:**\n```bash\nPOST /api/trpc/plugins.create\nAuthorization: Bearer {token}\nContent-Type: application/json\n\n{\n  \"name\": \"My Plugin\",\n  \"version\": \"1.0.0\",\n  \"description\": \"Plugin description\",\n  \"author\": \"Author Name\",\n  \"config\": {}\n}\n```\n\n**Plugin aktivieren/deaktivieren:**\n```bash\nPOST /api/trpc/plugins.toggle\nAuthorization: Bearer {token}\nContent-Type: application/json\n\n{\n  \"id\": 1,\n  \"enabled\": true\n}\n```\n\n### Drucker-Endpoints\n\n**Drucker auflisten:**\n```bash\nGET /api/trpc/printers.list\nAuthorization: Bearer {token}\n```\n\n**Drucker hinzufügen:**\n```bash\nPOST /api/trpc/printers.create\nAuthorization: Bearer {token}\nContent-Type: application/json\n\n{\n  \"name\": \"Office Printer\",\n  \"ipAddress\": \"192.168.1.100\",\n  \"port\": 9100,\n  \"model\": \"HP LaserJet Pro\"\n}\n```\n\n### Benutzer-Endpoints\n\n**Benutzer auflisten:**\n```bash\nGET /api/trpc/users.list\nAuthorization: Bearer {token}\n```\n\n**Benutzer erstellen:**\n```bash\nPOST /api/trpc/users.create\nAuthorization: Bearer {token}\nContent-Type: application/json\n\n{\n  \"name\": \"New User\",\n  \"email\": \"newuser@example.com\",\n  \"password\": \"securepassword\",\n  \"role\": \"editor\"\n}\n```\n\n## Projektstruktur\n\n```\nFlexiPlatform/\n├── app/                          # Expo Router Screens\n│   ├── (tabs)/\n│   │   ├── _layout.tsx          # Tab Navigation\n│   │   └── index.tsx            # Home/Dashboard Screen\n│   ├── plugins.tsx              # Plugin Management\n│   ├── users.tsx                # User Management\n│   └── settings/\n│       ├── index.tsx            # General Settings\n│       ├── printers.tsx         # Printer Settings\n│       ├── server.tsx           # Server Settings\n│       └── database.tsx         # Database Settings\n├── components/                   # Reusable Components\n│   ├── screen-container.tsx     # SafeArea Wrapper\n│   └── ui/\n│       └── icon-symbol.tsx      # Icon Mapping\n├── hooks/                        # Custom React Hooks\n│   ├── use-auth.ts              # Authentication Hook\n│   ├── use-colors.ts            # Theme Colors Hook\n│   └── use-color-scheme.ts      # Dark/Light Mode\n├── lib/                          # Utilities & Configuration\n│   ├── trpc.ts                  # tRPC Client\n│   └── utils.ts                 # Helper Functions\n├── server/                       # Backend API\n│   ├── routers.ts               # tRPC Routes\n│   ├── db.ts                    # Database Queries\n│   └── _core/                   # Framework Code\n├── drizzle/                      # Database Schema\n│   ├── schema.ts                # Table Definitions\n│   └── migrations/              # Database Migrations\n├── shared/                       # Shared Types & Constants\n│   ├── types.ts                 # TypeScript Types\n│   └── const.ts                 # Constants\n├── assets/                       # Static Assets\n│   └── images/                  # App Icons & Logos\n├── app.config.ts                # Expo Configuration\n├── tailwind.config.js           # Tailwind CSS Config\n├── theme.config.js              # Theme Colors\n└── package.json                 # Dependencies\n```\n\n## Konfiguration\n\n### Umgebungsvariablen\n\nErstellen Sie eine `.env.local` Datei im Projektroot mit folgenden Variablen:\n\n```env\n# Database\nDATABASE_URL=mysql://user:password@localhost:3306/flexiplatform\n\n# Server\nNODE_ENV=development\nPORT=3000\n\n# OAuth\nOAUTH_CLIENT_ID=your_client_id\nOAUTH_CLIENT_SECRET=your_client_secret\nOAUTH_REDIRECT_URI=http://localhost:3000/api/auth/callback\n\n# App\nAPP_NAME=FlexiPlatform\nAPP_VERSION=1.0.0\n```\n\n### Theme-Anpassung\n\nPassen Sie die Farben in `theme.config.js` an:\n\n```javascript\nconst themeColors = {\n  primary: { light: '#0a7ea4', dark: '#0a7ea4' },\n  background: { light: '#ffffff', dark: '#151718' },\n  surface: { light: '#f5f5f5', dark: '#1e2022' },\n  foreground: { light: '#11181C', dark: '#ECEDEE' },\n  muted: { light: '#687076', dark: '#9BA1A6' },\n  border: { light: '#E5E7EB', dark: '#334155' },\n  success: { light: '#22C55E', dark: '#4ADE80' },\n  warning: { light: '#F59E0B', dark: '#FBBF24' },\n  error: { light: '#EF4444', dark: '#F87171' },\n};\n```\n\n## Entwicklung\n\n### Neue Features hinzufügen\n\n1. **Backend-Endpoint erstellen**: Fügen Sie einen neuen Router in `server/routers.ts` hinzu\n2. **Datenbank-Schema aktualisieren**: Modifizieren Sie `drizzle/schema.ts` wenn nötig\n3. **Migrationen durchführen**: Führen Sie `pnpm db:push` aus\n4. **Frontend-Screen erstellen**: Erstellen Sie einen neuen Screen in `app/`\n5. **API-Integration**: Verwenden Sie tRPC Hooks im Frontend\n\n### Testen\n\n```bash\n# Unit Tests ausführen\npnpm test\n\n# TypeScript Typ-Checking\npnpm check\n\n# Linting\npnpm lint\n\n# Code formatieren\npnpm format\n```\n\n### Build für Production\n\n```bash\n# Backend bauen\npnpm build\n\n# Production starten\npnpm start\n```\n\n## Troubleshooting\n\n### Datenbank-Verbindungsfehler\n\nStellen Sie sicher, dass die `DATABASE_URL` in `.env.local` korrekt ist und der Datenbankserver läuft.\n\n### Plugin lädt nicht\n\nÜberprüfen Sie die Plugin-Konfiguration und stellen Sie sicher, dass alle erforderlichen Abhängigkeiten installiert sind.\n\n### Metro Bundler Fehler\n\nLöschen Sie den Cache und starten Sie neu:\n```bash\nrm -rf node_modules/.cache\npnpm dev\n```\n\n### TypeScript Fehler\n\nFühren Sie `pnpm check` aus um alle Typ-Fehler zu identifizieren.\n\n## Beitragen\n\nWir freuen uns über Beiträge! Bitte beachten Sie folgende Richtlinien:\n\n1. Forken Sie das Repository\n2. Erstellen Sie einen Feature-Branch (`git checkout -b feature/AmazingFeature`)\n3. Committen Sie Ihre Änderungen (`git commit -m 'Add some AmazingFeature'`)\n4. Pushen Sie zum Branch (`git push origin feature/AmazingFeature`)\n5. Öffnen Sie einen Pull Request\n\n## Lizenz\n\nDieses Projekt ist unter der MIT-Lizenz lizenziert. Siehe `LICENSE` Datei für Details.\n\n## Support\n\nBei Fragen oder Problemen erstellen Sie bitte ein Issue im GitHub-Repository oder kontaktieren Sie das Entwickler-Team.\n\n## Roadmap\n\n- [ ] Erweiterte Plugin-Verwaltung mit Marketplace\n- [ ] WebSocket-Unterstützung für Echtzeit-Updates\n- [ ] Mobile App für iOS und Android Store\n- [ ] Erweiterte Benutzer-Berechtigungen\n- [ ] API-Rate-Limiting und Sicherheit\n- [ ] Internationalisierung (i18n)\n- [ ] Dark Mode Unterstützung\n- [ ] Offline-Modus für Mobile\n\n---\n\n**Entwickelt mit ❤️ von Manus AI**\n\nLetztes Update: Februar 2026\n
+Stellen Sie sicher, dass folgende Software installiert ist:
+
+- **Node.js** 22.13 oder höher
+- **pnpm** (Package Manager)
+- **Git** (Versionskontrolle)
+
+### Installation in 5 Minuten
+
+```bash
+# 1. Repository klonen
+git clone https://github.com/seibchristian/FlexiPlatform.git
+cd FlexiPlatform
+
+# 2. Abhängigkeiten installieren
+pnpm install
+
+# 3. Datenbank-Migrationen durchführen
+pnpm db:push
+
+# 4. Entwicklungsserver starten
+pnpm dev
+```
+
+Die Anwendung ist dann verfügbar unter:
+- **Backend API**: http://localhost:3000
+- **Frontend Web**: http://localhost:8081
+
+---
+
+## 🛠 Technologie-Stack
+
+| Layer | Technologie | Version |
+|-------|-------------|---------|
+| **Frontend** | React Native + Expo | 54 |
+| **Styling** | NativeWind (Tailwind CSS) | 4 |
+| **Backend** | Express.js + Node.js | 22.13 |
+| **API** | tRPC | 11.7.2 |
+| **Datenbank** | Drizzle ORM + MySQL | Latest |
+| **Authentifizierung** | Manus OAuth | - |
+| **State Management** | React Context | - |
+
+---
+
+## 📥 Installation
+
+### Detaillierte Installationsschritte
+
+#### 1. Repository klonen
+
+```bash
+git clone https://github.com/seibchristian/FlexiPlatform.git
+cd FlexiPlatform
+```
+
+#### 2. Abhängigkeiten installieren
+
+```bash
+pnpm install
+```
+
+#### 3. Umgebungsvariablen konfigurieren
+
+```bash
+cp .env.example .env.local
+```
+
+Bearbeiten Sie `.env.local` mit Ihren Konfigurationen:
+
+```env
+# Database
+DATABASE_URL=mysql://user:password@localhost:3306/flexiplatform
+
+# Server
+NODE_ENV=development
+PORT=3000
+
+# OAuth (optional)
+OAUTH_CLIENT_ID=your_client_id
+OAUTH_CLIENT_SECRET=your_client_secret
+OAUTH_REDIRECT_URI=http://localhost:3000/api/auth/callback
+
+# App
+APP_NAME=FlexiPlatform
+APP_VERSION=1.0.0
+```
+
+#### 4. Datenbank-Migrationen durchführen
+
+```bash
+pnpm db:push
+```
+
+#### 5. Entwicklungsserver starten
+
+```bash
+pnpm dev
+```
+
+Dies startet automatisch:
+- Backend-Server auf Port 3000
+- Metro Bundler auf Port 8081
+
+---
+
+## 💻 Verwendung
+
+### Mobile App starten
+
+**iOS Simulator:**
+```bash
+pnpm ios
+```
+
+**Android Emulator:**
+```bash
+pnpm android
+```
+
+**Web-Version:**
+```bash
+pnpm dev:metro
+```
+
+Die Web-Version ist dann unter `http://localhost:8081` erreichbar.
+
+### Auf echtem Gerät testen
+
+Generieren Sie einen QR-Code für Expo Go:
+
+```bash
+pnpm qr
+```
+
+Scannen Sie den QR-Code mit der **Expo Go**-App auf Ihrem Smartphone (iOS oder Android).
+
+---
+
+## 🔌 Plugin-System
+
+Das Plugin-System ist das Herzstück von FlexiPlatform und ermöglicht es, neue Funktionen zur Laufzeit zu laden und zu entladen.
+
+### Plugin-Architektur
+
+Die Plugin-Architektur besteht aus vier Hauptkomponenten:
+
+**Plugin Registry**: Verwaltet alle installierten Plugins und deren Metadaten in der Datenbank.
+
+**Plugin Loader**: Lädt Plugins dynamisch zur Laufzeit und initialisiert sie mit der gespeicherten Konfiguration.
+
+**Plugin Lifecycle Manager**: Verwaltet die Aktivierung, Deaktivierung und Konfiguration von Plugins während der Laufzeit.
+
+**Plugin API**: Bietet eine standardisierte Schnittstelle für Plugins zur Interaktion mit der Plattform und anderen Plugins.
+
+### Einfaches Plugin-Beispiel
+
+```typescript
+// plugins/my-plugin/src/index.ts
+export interface MyPluginConfig {
+  enabled: boolean;
+  apiKey?: string;
+}
+
+export const myPlugin = {
+  name: "My Custom Plugin",
+  version: "1.0.0",
+  description: "Ein benutzerdefiniertes Plugin für FlexiPlatform",
+  author: "Your Name",
+  
+  async initialize(config: MyPluginConfig) {
+    console.log("Plugin initialisiert mit Config:", config);
+  },
+  
+  async execute(action: string, params: any) {
+    switch (action) {
+      case "doSomething":
+        return { success: true, message: "Action ausgeführt" };
+      default:
+        throw new Error(`Unbekannte Action: ${action}`);
+    }
+  },
+  
+  async shutdown() {
+    console.log("Plugin wird heruntergefahren");
+  },
+};
+```
+
+### Plugin installieren und verwalten
+
+**Über die Benutzeroberfläche:**
+
+1. Öffnen Sie die App und navigieren Sie zur "Plugins"-Seite
+2. Klicken Sie auf "+ Hinzufügen"
+3. Wählen Sie das Plugin aus der verfügbaren Liste
+4. Das Plugin wird installiert und kann sofort aktiviert werden
+
+**Plugin konfigurieren:**
+
+1. Gehen Sie zur Plugin-Detail-Seite
+2. Bearbeiten Sie die Konfigurationsparameter
+3. Speichern Sie die Änderungen
+4. Das Plugin wird mit den neuen Einstellungen neu geladen
+
+### Sample Analytics Plugin
+
+Ein vollständiges Sample-Plugin ist im Verzeichnis `plugins/sample-analytics-plugin/` enthalten. Dieses Plugin demonstriert Best Practices für die Plugin-Entwicklung:
+
+- Vollständige TypeScript-Implementierung
+- Lifecycle-Management
+- Fehlerbehandlung und Logging
+- Unit Tests
+- Konfigurationsvalidierung
+
+Siehe `PLUGIN_GUIDE.md` für eine ausführliche Entwicklungsanleitung.
+
+---
+
+## 📡 API-Dokumentation
+
+### Authentifizierung
+
+Alle geschützten Endpoints erfordern Authentifizierung über Manus OAuth.
+
+**Login:**
+```bash
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+```json
+{
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "user@example.com",
+    "role": "admin"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+### Plugin-Endpoints
+
+| Endpoint | Methode | Beschreibung |
+|----------|---------|-------------|
+| `/api/trpc/plugins.list` | GET | Alle Plugins auflisten |
+| `/api/trpc/plugins.create` | POST | Neues Plugin erstellen |
+| `/api/trpc/plugins.update` | PUT | Plugin aktualisieren |
+| `/api/trpc/plugins.toggle` | POST | Plugin aktivieren/deaktivieren |
+| `/api/trpc/plugins.delete` | DELETE | Plugin löschen |
+
+**Plugins auflisten:**
+```bash
+GET /api/trpc/plugins.list
+Authorization: Bearer {token}
+```
+
+**Plugin erstellen:**
+```bash
+POST /api/trpc/plugins.create
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "My Plugin",
+  "version": "1.0.0",
+  "description": "Plugin description",
+  "author": "Author Name",
+  "config": {}
+}
+```
+
+### Drucker-Endpoints
+
+| Endpoint | Methode | Beschreibung |
+|----------|---------|-------------|
+| `/api/trpc/printers.list` | GET | Alle Drucker auflisten |
+| `/api/trpc/printers.create` | POST | Neuen Drucker hinzufügen |
+| `/api/trpc/printers.update` | PUT | Drucker aktualisieren |
+| `/api/trpc/printers.delete` | DELETE | Drucker löschen |
+
+**Drucker hinzufügen:**
+```bash
+POST /api/trpc/printers.create
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Office Printer",
+  "ipAddress": "192.168.1.100",
+  "port": 9100,
+  "model": "HP LaserJet Pro"
+}
+```
+
+### Benutzer-Endpoints
+
+| Endpoint | Methode | Beschreibung |
+|----------|---------|-------------|
+| `/api/trpc/users.list` | GET | Alle Benutzer auflisten |
+| `/api/trpc/users.create` | POST | Neuen Benutzer erstellen |
+| `/api/trpc/users.update` | PUT | Benutzer aktualisieren |
+| `/api/trpc/users.delete` | DELETE | Benutzer löschen |
+
+**Benutzer erstellen:**
+```bash
+POST /api/trpc/users.create
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "New User",
+  "email": "newuser@example.com",
+  "password": "securepassword",
+  "role": "editor"
+}
+```
+
+---
+
+## 📁 Projektstruktur
+
+```
+FlexiPlatform/
+├── app/                          # Expo Router Screens (Frontend)
+│   ├── (tabs)/
+│   │   ├── _layout.tsx          # Tab Navigation
+│   │   └── index.tsx            # Home/Dashboard Screen
+│   ├── plugins.tsx              # Plugin Management Screen
+│   ├── users.tsx                # User Management Screen
+│   └── settings/
+│       ├── index.tsx            # General Settings
+│       ├── printers.tsx         # Printer Settings
+│       ├── server.tsx           # Server Settings
+│       └── database.tsx         # Database Settings
+│
+├── components/                   # Reusable React Components
+│   ├── screen-container.tsx     # SafeArea Wrapper
+│   └── ui/
+│       └── icon-symbol.tsx      # Icon Mapping
+│
+├── hooks/                        # Custom React Hooks
+│   ├── use-auth.ts              # Authentication Hook
+│   ├── use-colors.ts            # Theme Colors Hook
+│   └── use-color-scheme.ts      # Dark/Light Mode Detection
+│
+├── lib/                          # Utilities & Configuration
+│   ├── trpc.ts                  # tRPC Client
+│   └── utils.ts                 # Helper Functions
+│
+├── server/                       # Backend API (Node.js/Express)
+│   ├── routers.ts               # tRPC Routes Definition
+│   ├── db.ts                    # Database Query Functions
+│   └── _core/                   # Framework Core Code
+│
+├── drizzle/                      # Database Schema (ORM)
+│   ├── schema.ts                # Table Definitions
+│   └── migrations/              # Database Migrations
+│
+├── shared/                       # Shared Code
+│   ├── types.ts                 # TypeScript Type Definitions
+│   └── const.ts                 # Constants
+│
+├── assets/                       # Static Assets
+│   └── images/                  # App Icons & Logos
+│
+├── plugins/                      # Plugin Directory
+│   └── sample-analytics-plugin/ # Sample Plugin Template
+│
+├── app.config.ts                # Expo Configuration
+├── tailwind.config.js           # Tailwind CSS Configuration
+├── theme.config.js              # Theme Colors Definition
+├── package.json                 # Project Dependencies
+├── tsconfig.json                # TypeScript Configuration
+├── PLUGIN_GUIDE.md              # Plugin Development Guide
+└── README.md                    # This File
+```
+
+---
+
+## ⚙️ Konfiguration
+
+### Theme-Anpassung
+
+Passen Sie die Farben in `theme.config.js` an:
+
+```javascript
+const themeColors = {
+  primary: { light: '#0a7ea4', dark: '#0a7ea4' },
+  background: { light: '#ffffff', dark: '#151718' },
+  surface: { light: '#f5f5f5', dark: '#1e2022' },
+  foreground: { light: '#11181C', dark: '#ECEDEE' },
+  muted: { light: '#687076', dark: '#9BA1A6' },
+  border: { light: '#E5E7EB', dark: '#334155' },
+  success: { light: '#22C55E', dark: '#4ADE80' },
+  warning: { light: '#F59E0B', dark: '#FBBF24' },
+  error: { light: '#EF4444', dark: '#F87171' },
+};
+```
+
+### App-Metadaten
+
+Bearbeiten Sie `app.config.ts` um App-Namen und andere Metadaten anzupassen:
+
+```typescript
+const env = {
+  appName: "FlexiPlatform",
+  appSlug: "flexiplatform",
+  logoUrl: "https://...",
+  scheme: "manus...",
+  iosBundleId: "space.manus.flexiplatform",
+  androidPackage: "space.manus.flexiplatform",
+};
+```
+
+---
+
+## 🔧 Entwicklung
+
+### Neue Features hinzufügen
+
+**Workflow für neue Features:**
+
+1. **Backend-Endpoint erstellen**: Fügen Sie einen neuen Router in `server/routers.ts` hinzu
+2. **Datenbank-Schema aktualisieren**: Modifizieren Sie `drizzle/schema.ts` wenn nötig
+3. **Migrationen durchführen**: Führen Sie `pnpm db:push` aus
+4. **Frontend-Screen erstellen**: Erstellen Sie einen neuen Screen in `app/`
+5. **API-Integration**: Verwenden Sie tRPC Hooks im Frontend
+
+### Testing
+
+```bash
+# Unit Tests ausführen
+pnpm test
+
+# Tests im Watch-Modus
+pnpm test:watch
+
+# TypeScript Typ-Checking
+pnpm check
+
+# Linting
+pnpm lint
+
+# Code formatieren
+pnpm format
+```
+
+### Build für Production
+
+```bash
+# Backend bauen
+pnpm build
+
+# Production starten
+pnpm start
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Datenbank-Verbindungsfehler
+
+**Problem**: "Cannot connect to database"
+
+**Lösung**: Überprüfen Sie, dass die `DATABASE_URL` in `.env.local` korrekt ist und der Datenbankserver läuft.
+
+```bash
+# Datenbankverbindung testen
+mysql -u user -p -h localhost flexiplatform
+```
+
+### Plugin lädt nicht
+
+**Problem**: Plugin wird nicht in der UI angezeigt
+
+**Lösung**: Überprüfen Sie die Plugin-Konfiguration und stellen Sie sicher, dass alle erforderlichen Abhängigkeiten installiert sind.
+
+```bash
+# Plugin-Verzeichnis überprüfen
+ls -la plugins/your-plugin/
+```
+
+### Metro Bundler Fehler
+
+**Problem**: "Metro bundler error" oder "Cannot find module"
+
+**Lösung**: Löschen Sie den Cache und starten Sie neu:
+
+```bash
+rm -rf node_modules/.cache
+pnpm install
+pnpm dev
+```
+
+### TypeScript Fehler
+
+**Problem**: "Type errors in compilation"
+
+**Lösung**: Führen Sie `pnpm check` aus um alle Typ-Fehler zu identifizieren:
+
+```bash
+pnpm check
+```
+
+---
+
+## 🤝 Beitragen
+
+Wir freuen uns über Beiträge! Bitte beachten Sie folgende Richtlinien:
+
+1. **Forken Sie das Repository**
+2. **Erstellen Sie einen Feature-Branch**
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. **Committen Sie Ihre Änderungen**
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+4. **Pushen Sie zum Branch**
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. **Öffnen Sie einen Pull Request**
+
+---
+
+## 📄 Lizenz
+
+Dieses Projekt ist unter der **MIT-Lizenz** lizenziert. Siehe `LICENSE` Datei für Details.
+
+---
+
+## 📞 Support
+
+Bei Fragen oder Problemen:
+
+- **Issues**: Erstellen Sie ein Issue im [GitHub-Repository](https://github.com/seibchristian/FlexiPlatform/issues)
+- **Dokumentation**: Lesen Sie `PLUGIN_GUIDE.md` für Plugin-Entwicklung
+- **Diskussionen**: Nutzen Sie [GitHub Discussions](https://github.com/seibchristian/FlexiPlatform/discussions)
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Erweiterte Plugin-Verwaltung mit Marketplace
+- [ ] WebSocket-Unterstützung für Echtzeit-Updates
+- [ ] Mobile App für iOS und Android App Store
+- [ ] Erweiterte Benutzer-Berechtigungen und Rollen
+- [ ] API-Rate-Limiting und erweiterte Sicherheit
+- [ ] Internationalisierung (i18n) für mehrere Sprachen
+- [ ] Vollständiger Dark Mode Support
+- [ ] Offline-Modus für Mobile-Geräte
+- [ ] Plugin-Marketplace mit Community-Plugins
+- [ ] Erweiterte Monitoring und Analytics
+
+---
+
+## 📚 Weitere Ressourcen
+
+- **Plugin Development Guide**: Siehe `PLUGIN_GUIDE.md`
+- **Sample Plugin**: Siehe `plugins/sample-analytics-plugin/`
+- **Design Dokumentation**: Siehe `design.md`
+- **GitHub Repository**: https://github.com/seibchristian/FlexiPlatform
+
+---
+
+**Entwickelt mit ❤️ von Manus AI**
+
+Letztes Update: Februar 2026 | Version: 1.0.0
