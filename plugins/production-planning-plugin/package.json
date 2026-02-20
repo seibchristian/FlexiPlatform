@@ -1,0 +1,36 @@
+{
+  "name": "@flexiplatform/production-planning-plugin",
+  "version": "1.0.0",
+  "description": "Production Planning Plugin for FlexiPlatform - manage customers, products, orders, and generate printable order sheets",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "flexiplatform",
+    "plugin",
+    "production",
+    "planning",
+    "customers",
+    "products",
+    "orders"
+  ],
+  "author": "Manus AI",
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^2.1.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.7.0"
+  }
+}

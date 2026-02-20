@@ -1,0 +1,75 @@
+{
+  "name": "production-planning-plugin",
+  "displayName": "Production Planning Plugin",
+  "version": "1.0.0",
+  "description": "A comprehensive production planning plugin for FlexiPlatform that manages customers, products, orders, and generates printable order sheets.",
+  "author": "Manus AI",
+  "license": "MIT",
+  "homepage": "https://github.com/seibchristian/FlexiPlatform/tree/main/plugins/production-planning-plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seibchristian/FlexiPlatform.git"
+  },
+  "keywords": [
+    "flexiplatform",
+    "plugin",
+    "production",
+    "planning",
+    "customers",
+    "products",
+    "orders",
+    "printing"
+  ],
+  "permissions": [
+    "read:database",
+    "write:database",
+    "read:users",
+    "write:storage"
+  ],
+  "hooks": [
+    "onPluginInitialize",
+    "onDataChange"
+  ],
+  "settings": {
+    "enableCustomerArchiving": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable customer archiving functionality"
+    },
+    "defaultOrderStatus": {
+      "type": "string",
+      "default": "Neu",
+      "description": "Default status for new orders (Neu, In Bearbeitung, Fertig)"
+    },
+    "currencySymbol": {
+      "type": "string",
+      "default": "€",
+      "description": "Currency symbol for price display"
+    },
+    "enablePdfGeneration": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable PDF generation for order sheets"
+    },
+    "companyName": {
+      "type": "string",
+      "default": "Your Company Name",
+      "description": "Company name for order sheet header"
+    },
+    "companyAddress": {
+      "type": "string",
+      "default": "",
+      "description": "Company address for order sheet footer"
+    },
+    "companyPhone": {
+      "type": "string",
+      "default": "",
+      "description": "Company phone number for order sheet footer"
+    },
+    "companyEmail": {
+      "type": "string",
+      "default": "",
+      "description": "Company email for order sheet footer"
+    }
+  }
+}
