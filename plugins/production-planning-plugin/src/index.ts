@@ -497,6 +497,7 @@ class ProductionPlanningPlugin {
         description: params.description,
         price: params.price,
         category: params.category,
+        imageUrl: params.imageUrl,
       };
 
       // Validate required fields
@@ -543,6 +544,7 @@ class ProductionPlanningPlugin {
         description: params.description,
         price: params.price,
         category: params.category,
+        imageUrl: params.imageUrl,
       };
 
       if (!id) {
