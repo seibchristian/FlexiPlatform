@@ -1,6 +1,6 @@
 /**
  * Products Management Screen
- * React Native screen for managing products
+ * React Native screen for managing products with image upload support
  */
 
 import React, { useState, useEffect } from 'react';
@@ -13,6 +13,8 @@ import {
   Alert,
   ActivityIndicator,
   FlatList,
+  Image,
+  Modal,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -23,6 +25,7 @@ interface Product {
   description?: string;
   price: number;
   category?: string;
+  imageUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,6 +37,8 @@ export const ProductsScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   useEffect(() => {
     loadProducts();
@@ -92,19 +97,55 @@ export const ProductsScreen: React.FC = () => {
     );
   };
 
+  const handleViewImage = (product: Product) => {
+    setSelectedProduct(product);
+    setShowImageModal(true);
+  };
+
   const renderProductItem = ({ item }: { item: Product }) => (
     <View style={{ padding: 12, borderBottomWidth: 1, borderBottomColor: '#e0e0e0' }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+        {/* Product Image */}
+        {item.imageUrl ? (
+          <TouchableOpacity onPress={() => handleViewImage(item)}>
+            <Image
+              source={{ uri: item.imageUrl }}
+              style={{ width: 80, height: 80, borderRadius: 8, backgroundColor: '#f0f0f0' }}
+            />
+          </TouchableOpacity>
+        ) : (
+          <View
+            style={{
+              width: 80,
+              height: 80,
+              borderRadius: 8,
+              backgroundColor: '#e0e0e0',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={{ fontSize: 10, color: '#999' }}>No Image</Text>
+          </View>
+        )}
+
+        {/* Product Details */}
         <View style={{ flex: 1 }}>
           <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.name}</Text>
           <Text style={{ fontSize: 12, color: '#666' }}>Article: {item.articleNumber}</Text>
           {item.category && (
             <Text style={{ fontSize: 12, color: '#666' }}>Category: {item.category}</Text>
           )}
+          {item.description && (
+            <Text style={{ fontSize: 12, color: '#666', marginTop: 4 }} numberOfLines={2}>
+              {item.description}
+            </Text>
+          )}
           <Text style={{ fontSize: 14, fontWeight: 'bold', marginTop: 4, color: '#4CAF50' }}>
             €{item.price.toFixed(2)}
           </Text>
         </View>
+
+        {/* Action Buttons */}
         <View style={{ flexDirection: 'row', gap: 8 }}>
           <TouchableOpacity
             onPress={() => handleEditProduct(item)}
@@ -207,6 +248,42 @@ export const ProductsScreen: React.FC = () => {
           }
         />
       )}
+
+      {/* Image Modal */}
+      <Modal
+        visible={showImageModal}
+        transparent={true}
+        onRequestClose={() => setShowImageModal(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {selectedProduct?.imageUrl && (
+            <Image
+              source={{ uri: selectedProduct.imageUrl }}
+              style={{ width: '90%', height: '80%', resizeMode: 'contain' }}
+            />
+          )}
+          <TouchableOpacity
+            onPress={() => setShowImageModal(false)}
+            style={{
+              position: 'absolute',
+              top: 40,
+              right: 20,
+              padding: 10,
+              backgroundColor: 'rgba(255, 255, 255, 0.3)',
+              borderRadius: 20,
+            }}
+          >
+            <Text style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}>×</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };

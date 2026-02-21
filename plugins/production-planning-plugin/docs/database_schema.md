@@ -32,6 +32,7 @@ Das Produktionsplanungs-Plugin wird die folgenden Entitäten verwalten:
 | `description`   | `TEXT`      | Beschreibung des Produkts                      |                  |
 | `price`         | `DECIMAL(10,2)`| Preis pro Einheit                             | `NOT NULL`       |
 | `category`      | `VARCHAR(100)`| Produktkategorie                              |                  |
+| `imageUrl`      | `VARCHAR(255)`| URL des Produktbildes                         |                  |
 | `createdAt`     | `DATETIME`  | Erstellungsdatum des Eintrags                  | `DEFAULT CURRENT_TIMESTAMP` |
 | `updatedAt`     | `DATETIME`  | Datum der letzten Aktualisierung des Eintrags  | `DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP` |
 
