@@ -47,6 +47,7 @@ export interface Product {
   description?: string;
   price: number;
   category?: string;
+  imageUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -102,6 +103,7 @@ export interface CreateProductDTO {
   description?: string;
   price: number;
   category?: string;
+  imageUrl?: string;
 }
 
 export interface UpdateProductDTO {
@@ -109,6 +111,7 @@ export interface UpdateProductDTO {
   description?: string;
   price?: number;
   category?: string;
+  imageUrl?: string;
 }
 
 export interface CreateOrderItemDTO {
