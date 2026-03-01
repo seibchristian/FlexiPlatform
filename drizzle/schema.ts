@@ -95,6 +95,52 @@ export const activityLogs = mysqlTable("activity_logs", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+// ============ FORM DESIGNER TABLES ============
+
+// Form Definitions - Store form configurations for different entity types
+export const formDefinitions = mysqlTable("form_definitions", {
+  id: int("id").autoincrement().primaryKey(),
+  entityType: varchar("entityType", { length: 100 }).notNull().unique(),
+  displayName: varchar("displayName", { length: 255 }).notNull(),
+  description: text("description"),
+  fields: json("fields").$type<Array<FormFieldConfig>>().default([]).notNull(),
+  isActive: boolean("isActive").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+// Form Fields - Individual field configurations
+export const formFields = mysqlTable("form_fields", {
+  id: int("id").autoincrement().primaryKey(),
+  formDefinitionId: int("formDefinitionId").notNull(),
+  fieldName: varchar("fieldName", { length: 255 }).notNull(),
+  fieldLabel: varchar("fieldLabel", { length: 255 }).notNull(),
+  fieldType: varchar("fieldType", { length: 50 }).notNull(),
+  position: int("position").notNull(),
+  width: int("width").default(100).notNull(),
+  height: int("height").default(40).notNull(),
+  isRequired: boolean("isRequired").default(false).notNull(),
+  placeholder: varchar("placeholder", { length: 255 }),
+  defaultValue: varchar("defaultValue", { length: 255 }),
+  options: json("options").$type<Record<string, any>>(),
+  validation: json("validation").$type<Record<string, any>>(),
+  metadata: json("metadata").$type<Record<string, any>>(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+// Form Design History - Track changes to form configurations
+export const formDesignHistory = mysqlTable("form_design_history", {
+  id: int("id").autoincrement().primaryKey(),
+  formDefinitionId: int("formDefinitionId").notNull(),
+  userId: int("userId"),
+  action: varchar("action", { length: 50 }).notNull(),
+  previousConfig: json("previousConfig").$type<Record<string, any>>(),
+  newConfig: json("newConfig").$type<Record<string, any>>(),
+  description: text("description"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 // Export types
 export type Plugin = typeof plugins.$inferSelect;
 export type InsertPlugin = typeof plugins.$inferInsert;
@@ -110,3 +156,29 @@ export type InsertDatabaseSetting = typeof databaseSettings.$inferInsert;
 
 export type ActivityLog = typeof activityLogs.$inferSelect;
 export type InsertActivityLog = typeof activityLogs.$inferInsert;
+
+export type FormDefinition = typeof formDefinitions.$inferSelect;
+export type InsertFormDefinition = typeof formDefinitions.$inferInsert;
+
+export type FormField = typeof formFields.$inferSelect;
+export type InsertFormField = typeof formFields.$inferInsert;
+
+export type FormDesignHistory = typeof formDesignHistory.$inferSelect;
+export type InsertFormDesignHistory = typeof formDesignHistory.$inferInsert;
+
+// Form Field Configuration Type
+export interface FormFieldConfig {
+  id?: string;
+  fieldName: string;
+  fieldLabel: string;
+  fieldType: "text" | "email" | "number" | "textarea" | "select" | "checkbox" | "date" | "phone";
+  position: number;
+  width: number;
+  height: number;
+  isRequired: boolean;
+  placeholder?: string;
+  defaultValue?: string;
+  options?: Array<{ value: string; label: string }>;
+  validation?: Record<string, any>;
+  metadata?: Record<string, any>;
+}

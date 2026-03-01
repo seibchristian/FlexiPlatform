@@ -231,6 +231,137 @@ export const appRouter = router({
         });
       }),
   }),
+
+  // ============ FORM DESIGNER ============
+  formDesigner: router({
+    // Get all form definitions
+    listDefinitions: protectedProcedure.query(async () => {
+      return db.getFormDefinitions();
+    }),
+
+    // Get form definition by entity type
+    getDefinition: protectedProcedure
+      .input(z.object({ entityType: z.string() }))
+      .query(async ({ input }) => {
+        return db.getFormDefinitionByEntityType(input.entityType);
+      }),
+
+    // Create a new form definition
+    createDefinition: protectedProcedure
+      .input(
+        z.object({
+          entityType: z.string().min(1).max(100),
+          displayName: z.string().min(1).max(255),
+          description: z.string().optional(),
+          fields: z.array(z.any()).default([]),
+        })
+      )
+      .mutation(async ({ input }) => {
+        return db.createFormDefinition({
+          entityType: input.entityType,
+          displayName: input.displayName,
+          description: input.description,
+          fields: input.fields,
+          isActive: true,
+        });
+      }),
+
+    // Update form definition
+    updateDefinition: protectedProcedure
+      .input(
+        z.object({
+          id: z.number(),
+          displayName: z.string().optional(),
+          description: z.string().optional(),
+          fields: z.array(z.any()).optional(),
+          isActive: z.boolean().optional(),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        const { id, ...data } = input;
+
+        // Log the change
+        const oldDef = await db.getFormDefinitions();
+        await db.logFormDesignChange({
+          formDefinitionId: id,
+          userId: ctx.user.id,
+          action: "update",
+          previousConfig: oldDef,
+          newConfig: data,
+          description: "Form definition updated",
+        });
+
+        return db.updateFormDefinition(id, data);
+      }),
+
+    // Delete form definition
+    deleteDefinition: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        return db.deleteFormDefinition(input.id);
+      }),
+
+    // Get form fields
+    getFields: protectedProcedure
+      .input(z.object({ formDefinitionId: z.number() }))
+      .query(async ({ input }) => {
+        return db.getFormFields(input.formDefinitionId);
+      }),
+
+    // Create form field
+    createField: protectedProcedure
+      .input(
+        z.object({
+          formDefinitionId: z.number(),
+          fieldName: z.string(),
+          fieldLabel: z.string(),
+          fieldType: z.string(),
+          position: z.number(),
+          width: z.number().default(100),
+          height: z.number().default(40),
+          isRequired: z.boolean().default(false),
+          placeholder: z.string().optional(),
+          defaultValue: z.string().optional(),
+          options: z.record(z.any()).optional(),
+          validation: z.record(z.any()).optional(),
+          metadata: z.record(z.any()).optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        return db.createFormField(input);
+      }),
+
+    // Update form field
+    updateField: protectedProcedure
+      .input(
+        z.object({
+          id: z.number(),
+          fieldName: z.string().optional(),
+          fieldLabel: z.string().optional(),
+          fieldType: z.string().optional(),
+          position: z.number().optional(),
+          width: z.number().optional(),
+          height: z.number().optional(),
+          isRequired: z.boolean().optional(),
+          placeholder: z.string().optional(),
+          defaultValue: z.string().optional(),
+          options: z.record(z.any()).optional(),
+          validation: z.record(z.any()).optional(),
+          metadata: z.record(z.any()).optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        return db.updateFormField(id, data);
+      }),
+
+    // Delete form field
+    deleteField: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        return db.deleteFormField(input.id);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

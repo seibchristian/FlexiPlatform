@@ -272,3 +272,78 @@ export async function logActivity(data: any) {
   const { activityLogs: logsTable } = await import("../drizzle/schema");
   await db.insert(logsTable).values(data);
 }
+
+// ============ FORM DESIGNER ============
+
+export async function getFormDefinitions() {
+  const db = await getDb();
+  if (!db) return [];
+  const { formDefinitions: formDefsTable } = await import("../drizzle/schema");
+  return db.select().from(formDefsTable);
+}
+
+export async function getFormDefinitionByEntityType(entityType: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const { formDefinitions: formDefsTable } = await import("../drizzle/schema");
+  const result = await db.select().from(formDefsTable).where(eq(formDefsTable.entityType, entityType));
+  return result[0] || null;
+}
+
+export async function createFormDefinition(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { formDefinitions: formDefsTable } = await import("../drizzle/schema");
+  const result = await db.insert(formDefsTable).values(data);
+  return result;
+}
+
+export async function updateFormDefinition(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { formDefinitions: formDefsTable } = await import("../drizzle/schema");
+  await db.update(formDefsTable).set(data).where(eq(formDefsTable.id, id));
+}
+
+export async function deleteFormDefinition(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { formDefinitions: formDefsTable } = await import("../drizzle/schema");
+  await db.delete(formDefsTable).where(eq(formDefsTable.id, id));
+}
+
+export async function getFormFields(formDefinitionId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const { formFields: fieldsTable } = await import("../drizzle/schema");
+  return db.select().from(fieldsTable).where(eq(fieldsTable.formDefinitionId, formDefinitionId));
+}
+
+export async function createFormField(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { formFields: fieldsTable } = await import("../drizzle/schema");
+  await db.insert(fieldsTable).values(data);
+  return true;
+}
+
+export async function updateFormField(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { formFields: fieldsTable } = await import("../drizzle/schema");
+  await db.update(fieldsTable).set(data).where(eq(fieldsTable.id, id));
+}
+
+export async function deleteFormField(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { formFields: fieldsTable } = await import("../drizzle/schema");
+  await db.delete(fieldsTable).where(eq(fieldsTable.id, id));
+}
+
+export async function logFormDesignChange(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { formDesignHistory: historyTable } = await import("../drizzle/schema");
+  await db.insert(historyTable).values(data);
+}
